@@ -17,7 +17,14 @@ export class AuthUseCases{
         try {
             const {email, password} = loginUsuarioDto;
             const usuario = await this.findOneByTerm(email)
-           
+            
+            if(usuario.esEliminado){
+                return {
+                    error:400,
+                    message:"El usuario no existe"
+                }
+            }
+
             if(!usuario)
                 return {
                         error: 404,
@@ -60,6 +67,13 @@ export class AuthUseCases{
                 return {
                     error:400,
                     message:'No se encontro ningun usuario'
+                }
+            }
+
+            if(usuarioEncontrado.esEliminado){
+                return {
+                    error:400,
+                    message:"El usuario no existe"
                 }
             }
             

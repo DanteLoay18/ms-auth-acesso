@@ -17,21 +17,24 @@ export class AuthUseCases{
         try {
             const {email, password} = loginUsuarioDto;
             const usuario = await this.findOneByTerm(email)
-            
-            if(usuario.esEliminado){
-                return {
-                    error:400,
-                    message:"El usuario no existe"
-                }
-            }
-
+           
             if(!usuario)
                 return {
                         error: 404,
                         message:`Credenciales no validas(email)`
                        }
                 
+            
+             
+            if(usuario?.esEliminado){
+                return {
+                    error:400,
+                    message:"El usuario no existe"
+                }
+            }
+            
 
+            
             if( !bcrypt.compareSync(password, usuario.password))
                 return {
                     error: 404,

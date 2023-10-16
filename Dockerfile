@@ -24,7 +24,7 @@ COPY package.json yarn.lock ./
 
 RUN yarn install --prod
 
-COPY .env .env
+COPY .env.production .env
 
 COPY --from=builder /app/dist ./dist
 

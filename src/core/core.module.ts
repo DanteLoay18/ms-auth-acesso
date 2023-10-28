@@ -17,7 +17,7 @@ const AUTH_PROVIDERS=[
     LoginUsuarioCommand,
     LoginUsuarioHandler,
     CheckStatusUsuarioCommand,
-    CheckStatusUsuarioHandler
+    CheckStatusUsuarioHandler,
 ]
 
 

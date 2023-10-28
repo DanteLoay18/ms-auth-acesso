@@ -3,7 +3,6 @@ import { Controller} from '@nestjs/common';
 
 import { CommandBus } from "@nestjs/cqrs";
 import { MessagePattern } from '@nestjs/microservices';
-import {stringify} from 'uuid'
 import { LoginUsuarioRequest } from '../model/login-usuario.request';
 import { CheckStatusUsuarioCommand, LoginUsuarioCommand } from 'src/core/application/features';
 
@@ -19,44 +18,18 @@ export class AuthController{
     async loginUsuario(loginUsuarioDto:LoginUsuarioRequest) {
 
         
-        const {token,_doc, error, message}=await this.command.execute(new LoginUsuarioCommand(loginUsuarioDto));
-        if(error)
-            return {
-                error,
-                message
-            }
- 
-            
-        delete _doc.password;
-        _doc._id=stringify(_doc._id);
+        return await this.command.execute(new LoginUsuarioCommand(loginUsuarioDto));
         
-        return {
-            token,
-            ..._doc
-        };
     }
 
     @MessagePattern({cmd: 'checkstatus_usuario'})
-    async checkAuthStatus({usuario}:any) {
+    async checkAuthStatus({usuario, idSistema}:any) {
 
+        return await this.command.execute(new CheckStatusUsuarioCommand(usuario,idSistema ));
         
-        const {token,_doc, error, message} = await this.command.execute(new CheckStatusUsuarioCommand(usuario));
         
-        if(error)
-        return {
-            error,
-            message
-        }
-    
-
-        
-        delete _doc.password;
-        _doc._id=stringify(_doc._id);
-        return {
-            token,
-            ..._doc
-        };
     }
+
 
   
 }

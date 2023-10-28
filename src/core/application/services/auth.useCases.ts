@@ -20,16 +20,18 @@ export class AuthUseCases{
            
             if(!usuario)
                 return {
-                        error: 404,
-                        message:`Credenciales no validas(email)`
-                       }
+                    success:false,
+                    message:"Credenciales no validas",
+                    value: {}
+                }
                 
             
              
             if(usuario?.esEliminado){
                 return {
-                    error:400,
-                    message:"El usuario no existe"
+                    success:false,
+                    message:"Credenciales no validas",
+                    value: {}
                 }
             }
             
@@ -37,17 +39,19 @@ export class AuthUseCases{
             
             if( !bcrypt.compareSync(password, usuario.password))
                 return {
-                    error: 404,
-                    message:`Credenciales no validas(password)`
+                    success:false,
+                    message:"Credenciales no validas",
+                    value: {}
                 }
             
             
-
-        
             return {
-                    ...usuario,
-                    token: this.gwtJwtToken({_id:usuario._id})
-                    };
+                    success:true,
+                    message:"",
+                    value:{
+                        token: this.gwtJwtToken({_id:usuario._id, esEliminado:usuario.esEliminado})
+                    }
+            };
         } catch (error) {
             this.handleExceptions(error)
         }
@@ -58,32 +62,46 @@ export class AuthUseCases{
 
     
 
-    async checkStatusAuth(usuario:string){
+    async checkStatusAuth(idUsuario:string, idSistema:string){
         
         
         try {
             
-            const usuarioEncontrado = await this.authService.findOneById(usuario);
+            const usuarioEncontrado = await this.authService.findOneById(idUsuario);
             
             
             if(!usuarioEncontrado){
                 return {
-                    error:400,
-                    message:'No se encontro ningun usuario'
+                    success:false,
+                    message:'No se encontro ningun usuario',
+                    value: {}
                 }
             }
 
             if(usuarioEncontrado.esEliminado){
                 return {
-                    error:400,
-                    message:"El usuario no existe"
+                    success:false,
+                    message:'El usuario no existe',
+                    value: {}
                 }
             }
             
-        
+            if(idSistema!==undefined){
+                return {
+                    success:true,
+                    message:'',
+                    value: {
+                        token: this.gwtJwtToken({_id:idUsuario, esEliminado:usuarioEncontrado.esEliminado, idSistema})
+                    }
+                };
+            }
+
             return {
-                ...usuarioEncontrado,
-                token: this.gwtJwtToken({_id:usuario})
+                    success:true,
+                    message:'',
+                    value: {
+                        token: this.gwtJwtToken({_id:idUsuario, esEliminado:usuarioEncontrado.esEliminado})
+                    }
                 };
 
         } catch (error) {

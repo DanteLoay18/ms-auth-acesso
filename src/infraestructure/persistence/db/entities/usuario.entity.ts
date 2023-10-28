@@ -19,6 +19,12 @@ export class Usuario extends Base{
     password: string;
 
     @Prop({
+        type:String
+    })
+    dni: string;
+
+
+    @Prop({
         type:String,
         required:true
     })

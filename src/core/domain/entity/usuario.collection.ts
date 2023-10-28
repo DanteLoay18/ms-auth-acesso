@@ -6,6 +6,7 @@ export class Usuario extends Base{
 
     nombres:     string;
     email:   string;
+    dni :string;
     password:   string;
     primerApellido:  string;
     segundoApellido:  string;

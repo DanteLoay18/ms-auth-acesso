@@ -10,7 +10,7 @@ export class CheckStatusUsuarioHandler implements ICommandHandler<CheckStatusUsu
 
     async execute(command: CheckStatusUsuarioCommand) {
 
-        return this.authUseCases.checkStatusAuth(command.usuarioDto, command.idSistema);
+        return this.authUseCases.checkStatusAuth(command.usuarioDto, command.idSistema,command.idRol);
     }
 
 }

@@ -62,7 +62,7 @@ export class AuthUseCases{
 
     
 
-    async checkStatusAuth(idUsuario:string, idSistema:string){
+    async checkStatusAuth(idUsuario:string, idSistema:string, idRol:string){
         
         
         try {
@@ -86,12 +86,12 @@ export class AuthUseCases{
                 }
             }
             
-            if(idSistema!==undefined){
+            if(idSistema!==undefined && idRol !==undefined){
                 return {
                     success:true,
                     message:'',
                     value: {
-                        token: this.gwtJwtToken({_id:idUsuario, esEliminado:usuarioEncontrado.esEliminado, idSistema})
+                        token: this.gwtJwtToken({_id:idUsuario, esEliminado:usuarioEncontrado.esEliminado, idSistema, idRol})
                     }
                 };
             }

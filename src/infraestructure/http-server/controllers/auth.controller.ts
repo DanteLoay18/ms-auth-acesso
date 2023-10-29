@@ -23,9 +23,9 @@ export class AuthController{
     }
 
     @MessagePattern({cmd: 'checkstatus_usuario'})
-    async checkAuthStatus({usuario, idSistema}:any) {
+    async checkAuthStatus({usuario, idSistema, idRol}:any) {
 
-        return await this.command.execute(new CheckStatusUsuarioCommand(usuario,idSistema ));
+        return await this.command.execute(new CheckStatusUsuarioCommand(usuario,idSistema, idRol ));
         
         
     }
